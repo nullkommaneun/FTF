@@ -1,1 +1,41 @@
 
+{
+    "layoutImage": "layout.png",
+    "stations": [
+        {
+            "id": "S1_Pickup_A",
+            "type": "pickup",
+            "pos": { "x": 150, "y": 100 }
+        },
+        {
+            "id": "S2_Dropoff_A",
+            "type": "dropoff",
+            "pos": { "x": 800, "y": 100 }
+        },
+        {
+            "id": "S3_Charge",
+            "type": "charge",
+            "pos": { "x": 50, "y": 500 }
+        }
+    ],
+    "paths": [
+        {
+            "id": "P1",
+            "waypoints": [
+                { "x": 150, "y": 100 },
+                { "x": 800, "y": 100 }
+            ]
+        },
+        {
+            "id": "P2_Charge",
+            "waypoints": [
+                { "x": 50, "y": 100 },
+                { "x": 50, "y": 500 }
+            ]
+        }
+    ],
+    "agvStarts": [
+        { "id": "FTS_01", "pos": { "x": 150, "y": 200 }, "angle": 0 },
+        { "id": "FTS_02", "pos": { "x": 150, "y": 300 }, "angle": 0 }
+    ]
+}
