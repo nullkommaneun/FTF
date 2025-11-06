@@ -1,68 +1,96 @@
 // js/main.js
 
-// WICHTIG: Den ErrorHandler als erstes Modul importieren und initialisieren!
 import { init as initErrorHandler, log } from './ErrorHandler.js';
 initErrorHandler();
 
-// Placeholder-Imports für die Struktur
-// Wir werden sie später befüllen.
-// import { Simulation } from './Simulation.js';
-// import { JobManager } from './JobManager.js';
+// Importiere die "Welt"-Klasse
+import { Simulation } from './Simulation.js';
+// import { JobManager } from './JobManager.js'; // Noch nicht genutzt
 
 console.log("main.js geladen.");
 
 // Globale Variablen für p5.js
 let sim;
 let jobMgr;
+let config;
+let layoutImg;
 
 // --- p5.js Lebenszyklus ---
 
 function preload() {
     console.log("p5: preload start");
     try {
-        // Hier laden wir später config.json und layout.png
+        // Lade die Konfiguration
+        // p5.js stellt sicher, dass 'config' in setup() verfügbar ist
+        config = loadJSON('config.json');
     } catch (error) {
-        log(error, "preload"); // Fehler an unser System übergeben
-        throw error; // Und p5 trotzdem stoppen lassen
+        log(error, "preload");
+        throw error;
     }
-    console.log("p5: preload ende");
+    console.log("p5: preload ende. Config-Pfad:", config.layoutImage);
 }
 
 function setup() {
     console.log("p5: setup start");
-    const container = document.getElementById('canvas-container');
-    const canvas = createCanvas(container.clientWidth, container.clientHeight);
-    canvas.parent(container);
+    
+    // Lade das HINTERGRUNDBILD basierend auf der config.
+    // Wir nutzen den Callback von loadImage, um die Simulation
+    // erst zu starten, NACHDEM das Bild geladen ist.
+    layoutImg = loadImage(config.layoutImage, (img) => {
+        console.log("Bild geladen:", config.layoutImage, img.width, img.height);
+        
+        // Canvas an Bildgröße anpassen!
+        const container = document.getElementById('canvas-container');
+        const canvas = createCanvas(img.width, img.height);
+        canvas.parent(container);
 
-    // Test des ErrorHandlers (kann auskommentiert werden)
-    // throw new Error("Test-Fehler im Setup!"); 
-    // testAsyncError();
+        // Initialisiere die Simulation
+        try {
+            sim = new Simulation(config, img);
+            console.log("✅ Simulation initialisiert.");
+        } catch (error) {
+            log(error, "Simulation.constructor");
+        }
 
-    console.log("p5: setup ende");
+    }, (event) => {
+        // Fehler-Callback für loadImage
+        log(new Error(`Bild konnte nicht geladen werden: ${config.layoutImage}`), "setup.loadImage");
+    });
+
+    // Wichtiger Hinweis: setup() endet hier. 
+    // Der Code in draw() wird erst ausgeführt, aber 'sim' 
+    // ist möglicherweise noch nicht definiert, bis das Bild geladen ist.
+    console.log("p5: setup ende (warte auf Bild-Ladevorgang...)");
 }
 
 function draw() {
-    background(50, 50, 50); // Dunkelgrauer Hintergrund
-    
-    // Hier kommen sim.update() und sim.draw()
-    
-    // Test: Zeichne "Hallo" um zu sehen, dass es läuft
-    fill(255);
-    textSize(20);
-    textAlign(CENTER, CENTER);
-    text("Phase 1: ErrorHandler läuft. Canvas aktiv.", width / 2, height / 2);
+    // Zeichne nur, wenn die Simulation (und das Bild) bereit ist
+    if (sim) {
+        try {
+            sim.update();
+            sim.draw();
+        } catch (error) {
+            log(error, "Global Draw/Update Loop");
+            noLoop(); // Stoppe die Simulation bei einem kritischen Draw-Fehler
+        }
+    } else {
+        // Fallback, falls das Bild noch lädt
+        background(50);
+        fill(255);
+        textSize(20);
+        textAlign(CENTER, CENTER);
+        text("Lade Simulation & Layout...", width / 2, height / 2);
+    }
 }
 
 // --- Globale p5-Instanz ---
-// Wir binden die p5-Funktionen an das globale window-Objekt,
-// damit p5.js sie im "global mode" finden kann.
 window.preload = preload;
 window.setup = setup;
 window.draw = draw;
 
-// --- Hilfsfunktion zum Testen des Async-Error-Handlers ---
-async function testAsyncError() {
-    await new Promise((_, reject) => 
-        setTimeout(() => reject("Test: Asynchroner Fehler (Promise Rejection)"), 1000)
-    );
-}
+// Optional: Canvas-Größe an Fenster anpassen (später)
+// function windowResized() {
+//     const container = document.getElementById('canvas-container');
+//     resizeCanvas(container.clientWidth, container.clientHeight);
+// }
+// window.windowResized = windowResized;
