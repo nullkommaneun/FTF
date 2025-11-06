@@ -1,41 +1,71 @@
-
 {
     "layoutImage": "layout.png",
+    "settings": {
+        "canvasSize": { "width": 1000, "height": 800 }
+    },
     "stations": [
         {
-            "id": "S1_Pickup_A",
+            "id": "S1_Pick",
             "type": "pickup",
-            "pos": { "x": 150, "y": 100 }
+            "pos": { "x": 200, "y": 600 },
+            "approachPos": { "x": 200, "y": 550 }
         },
         {
-            "id": "S2_Dropoff_A",
+            "id": "S2_Pick",
+            "type": "pickup",
+            "pos": { "x": 300, "y": 600 },
+            "approachPos": { "x": 300, "y": 550 }
+        },
+        {
+            "id": "S3_Pick",
+            "type": "pickup",
+            "pos": { "x": 400, "y": 600 },
+            "approachPos": { "x": 400, "y": 550 }
+        },
+        {
+            "id": "S4_Pick",
+            "type": "pickup",
+            "pos": { "x": 500, "y": 600 },
+            "approachPos": { "x": 500, "y": 550 }
+        },
+        {
+            "id": "S5_Pick",
+            "type": "pickup",
+            "pos": { "x": 600, "y": 600 },
+            "approachPos": { "x": 600, "y": 550 }
+        },
+        {
+            "id": "S6_Pick",
+            "type": "pickup",
+            "pos": { "x": 700, "y": 600 },
+            "approachPos": { "x": 700, "y": 550 }
+        },
+        {
+            "id": "D1_Halle",
             "type": "dropoff",
-            "pos": { "x": 800, "y": 100 }
-        },
-        {
-            "id": "S3_Charge",
-            "type": "charge",
-            "pos": { "x": 50, "y": 500 }
+            "pos": { "x": 900, "y": 100 },
+            "approachPos": { "x": 900, "y": 100 }
         }
     ],
     "paths": [
         {
-            "id": "P1",
+            "id": "P_Highway_Quer",
             "waypoints": [
-                { "x": 150, "y": 100 },
-                { "x": 800, "y": 100 }
+                { "x": 200, "y": 550 },
+                { "x": 900, "y": 550 }
             ]
         },
         {
-            "id": "P2_Charge",
+            "id": "P_Highway_Laengs",
             "waypoints": [
-                { "x": 50, "y": 100 },
-                { "x": 50, "y": 500 }
+                { "x": 900, "y": 550 },
+                { "x": 900, "y": 100 }
             ]
         }
     ],
     "agvStarts": [
-        { "id": "FTS_01", "pos": { "x": 150, "y": 200 }, "angle": 0 },
-        { "id": "FTS_02", "pos": { "x": 150, "y": 300 }, "angle": 0 }
+        { "id": "FTS_01", "pos": { "x": 200, "y": 550 }, "angle": 0 },
+        { "id": "FTS_02", "pos": { "x": 300, "y": 550 }, "angle": -1.5708 },
+        { "id": "FTS_03", "pos": { "x": 400, "y": 550 }, "angle": 0 }
     ]
 }
