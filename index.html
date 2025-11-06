@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VW Zwickau FTS-Sim (PoC)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main id="canvas-container"></main>
+
+    <div id="error-overlay" class="hidden">
+        <div class="error-header">
+            <strong>Fehler in der Simulation</strong>
+            <button id="error-close">&times;</button>
+        </div>
+        <div class="error-content">
+            <p>Ein unerwarteter Fehler ist aufgetreten.</p>
+            <pre id="error-message"></pre>
+        </div>
+    </div>
+
+    <script src="lib/p5.min.js"></script>
+    
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
